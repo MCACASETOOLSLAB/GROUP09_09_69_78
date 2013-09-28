@@ -24,6 +24,7 @@ static Semaphore BufferLock("BufferLock", 1);   // lock protecting the buffer
 
 strstream *Filler(int n)
 {
+     
      int  i;
      strstream *Space;
 

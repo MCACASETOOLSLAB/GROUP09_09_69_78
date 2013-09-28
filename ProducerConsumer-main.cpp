@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
         exit(0);
      }
      else {
+       
      	NumberOfThreads = abs(atoi(argv[1]));
         NumberOfData    = abs(atoi(argv[2]));
      }

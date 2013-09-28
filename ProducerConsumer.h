@@ -6,7 +6,6 @@
 
 #ifndef _PROD_CONS_H
 #define _PROD_CONS_H
-
 #include "ThreadClass.h"
 
 #define BUFFER_SIZE    5    // bounded buffer size

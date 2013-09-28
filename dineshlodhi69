@@ -1,0 +1,166 @@
+// producer consumer  problem using semaphore..............
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#include <sys/wait.h>
+#include <time.h>
+#include <errno.h>
+
+#define NUM_SUPPLIED	10
+#define MAX_QUEUE	 5
+#define	AVE_SUPPLIER_IA_TIME	2.7
+#define AVE_CONSUMER_IA_TIME	3.0
+	
+key_t	key = IPC_PRIVATE;
+int	id;
+#if defined(__alpha)
+
+void	usleep(unsigned useconds);	/* missing from unistd.h */
+
+#endif
+
+#if defined(__bsd)	
+
+union	semun	sem_val;	/* used for setting value */
+
+#else
+union	semun {		/* for 4th argument of semctl() (NOT in sem.h) */
+	int val;
+	struct semid_ds *buf;
+	u_short *array;
+} sem_val;			/* used for setting value */
+#endif
+
+int	msec_sleep(int msecs);
+int	msec_interarrival_time(double ave);
+
+/* --------------------------------------------------------------- */
+
+int main(int argc, char *argv[], char *envp[])
+	{
+	int	i, opid, pid, ostatus, value, ret;
+	struct	sembuf	op_inc[1] = {{
+		0,			/* semaphore #0 */
+		1,			/* increment by 1 */
+		0}};
+	struct	sembuf	op_dec[1] = {{
+		0,			/* semaphore #0 */
+		-1,			/* decrement by 1 */
+		0}};
+
+	srand((unsigned)time(NULL));
+	if ( (id = semget(key, 1, 0666 | IPC_CREAT)) < 0)
+		{
+		perror("\nsemget(IPC_CREAT): ");
+		exit(-1);
+		}
+
+	opid = fork();
+	if (opid == 0)
+		{
+		sleep(1);
+		for(i = 0 ; i < NUM_SUPPLIED ; i++)
+			{
+			ret = msec_interarrival_time(AVE_CONSUMER_IA_TIME);
+			msec_sleep(ret);
+					/* block here until resource avail */
+			if (semop(id, &op_dec[0] ,1) < 0)
+				{
+				perror("\n  semop(-1): ");
+				exit(-1);
+				}
+			else
+				{
+				sem_val.val = 0;
+				fprintf(stderr,
+				"\n   consumer: 1 of %d consumed [%5.3f]",
+					semctl(id, 0, GETVAL, sem_val) + 1, 
+					(double)ret/1000.0);
+				}
+			}
+		return(0);
+		}  /* end of child = consumer */
+
+		   /* start of parent = supplier */
+	for (i = 0 ; i < NUM_SUPPLIED ; i++)
+		{
+		msec_sleep(msec_interarrival_time(AVE_SUPPLIER_IA_TIME));
+		value = MAX_QUEUE;
+		while (value >= MAX_QUEUE)
+			{
+			sem_val.val = 0;
+		if ( (value = semctl(id, 0, GETVAL, sem_val))< 0)
+				{
+				perror("\n  semctl(GETVAL): ");
+				exit(-1);
+				}
+			}  /* end of while */
+		if (semop(id, &op_inc[0] ,1) < 0)
+			{
+			perror("\nsemop(+1): ");
+			exit(-1);
+			}
+		else
+			{
+			fprintf(stderr,
+			"\nsupplier: 1 more supplied");
+			}
+		}
+		   /* end of supplier */
+	
+	if ( (pid = wait(&ostatus)) < 0)
+		{
+		perror("\nwait: ");
+		}
+	else
+		{
+		fprintf(stderr, "\nsupplier: child exited normally");
+		}
+
+	sem_val.val = 0;
+	if (semctl(id, 0, IPC_RMID, sem_val) < 0)
+		{
+		perror("\nsemctl(IPC_RMID): ");
+		exit(-2);
+		}
+	else
+		{
+		fprintf(stderr, "\nsupplier: exiting normally \n");
+		}
+	return(0);
+	}   /* end of main */
+
+/* ---------------------------------------------------------------- */
+
+int	msec_sleep(int msecs)
+
+		/* this causes the process to suspend itself
+	for the given number of milliseconds (unless a signal
+	arrives) */
+	{
+/* DIAGNOSTIC 
+	fprintf(stderr, "\n     sleep(%d): ", msecs/1000); */
+	sleep(msecs/1000);
+
+/* DIAGNOSTIC
+	fprintf(stderr, "\n    usleep(%d): ", msecs % 1000); */
+	usleep(msecs % 1000);
+
+	return(0);
+	}  /* end of msec_sleep */
+
+/* ---------------------------------------------------------------- */
+
+int	msec_interarrival_time(double ave)
+		/* random millisecond interarrival time generator given
+	the specified average in (double) seconds */
+	{
+	double	itime;
+
+	itime = 2.0 * ave * ((double)rand()/(double)RAND_MAX);
+	return((int)(itime * 1000.0));
+	}

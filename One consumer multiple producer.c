@@ -71,7 +71,9 @@ int buf_Read(struct cBuf *cb, char *out) {
     while(buf_IsEmpty(cb)){
         pthread_cond_wait(&(cb->buffer_full),&(cb->mutex));
     }
+    
     for (i=0;i<BUFFER_SIZE-1;i++){
+    
     printf("\n");
         if (cb->start == cb->end) break;        
         out[i] = cb->buf[cb->start];

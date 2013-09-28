@@ -156,8 +156,10 @@ int	msec_sleep(int msecs)
 /* ---------------------------------------------------------------- */
 
 int	msec_interarrival_time(double ave)
+		
 		/* random millisecond interarrival time generator given
-	the specified average in (double) seconds */
+
+				the specified average in (double) seconds */
 	{
 	double	itime;
 

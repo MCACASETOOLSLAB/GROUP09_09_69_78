@@ -261,8 +261,6 @@ int main()
      delay(2000);
  
  
-      /*************************/
- 
       cleardevice();
       outtextxy(300,400,"Thank You For Watching");
       delay(5000);

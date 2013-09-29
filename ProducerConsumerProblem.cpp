@@ -28,7 +28,6 @@ int main()
      outtextxy(340,135,"Empty");
      outtextxy(450,135,"Empty");
      outtextxy(550,135,"Empty");
-     
      outtextxy(100,480,"Available Buffer");
      outtextxy(100,500,"5");
      outtextxy(100,550,"Item Produced");

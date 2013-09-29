@@ -34,8 +34,6 @@ int main()
      outtextxy(100,570,"0");
      outtextxy(100,620,"Item Consumed");
      outtextxy(100,640,"0");
- 
-     
      // Item-1 moves
      for(i=800,j=400; i >= 50; i--)
      {

@@ -200,7 +200,7 @@ int main()
      outtextxy(100,620,"Item Consumed");
      outtextxy(100,640,"3");
      delay(2000);
-     
+
      //consuming Item-4
      for(i=50,j=400; i <= 800; i++)
      {

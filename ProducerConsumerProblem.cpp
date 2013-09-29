@@ -11,7 +11,6 @@ int main()
 
      left=100, top =100,right =190, bottom =200; 
      rectangle(left,top,right,bottom);
-    
      left=210, top =100,right =300, bottom =200; 
      rectangle(left,top,right,bottom);
      

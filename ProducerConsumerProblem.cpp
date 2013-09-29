@@ -22,6 +22,7 @@ int main()
      rectangle(left,top,right,bottom);
      left=530,top=100,right=610,bottom=200;
      rectangle(left,top,right,bottom);
+     
      // Message to the box
      outtextxy(120,135,"Empty");
      outtextxy(230,135,"Empty");

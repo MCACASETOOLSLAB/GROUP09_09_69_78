@@ -11,7 +11,6 @@ int main()
      initwindow(800,700,"Producer Consumer Problem");
      outtextxy(100,50,"Process Synchronization Using Producer Consumer Problem");
 
-
      left=100, top =100,right =190, bottom =200; 
      rectangle(left,top,right,bottom);
     

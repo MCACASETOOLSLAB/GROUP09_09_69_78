@@ -126,9 +126,7 @@ int main()
      outtextxy(100,620,"Item Consumed");
      outtextxy(100,640,"1");
      delay(2000);
-     
-     
-     
+
      //Item-5 move
      for(i=800,j=400; i >= 50; i--)
      {

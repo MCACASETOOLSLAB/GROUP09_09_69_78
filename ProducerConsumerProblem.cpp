@@ -6,7 +6,6 @@ int main()
 {
      int i=0,j=0;
      int left, top,right ,bottom;
-
      initwindow(800,700,"Producer Consumer Problem");
      outtextxy(100,50,"Process Synchronization Using Producer Consumer Problem");
 

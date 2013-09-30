@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>producer-consumer</title>
+<link rel="stylesheet" href="style.css"/>
+
+
+<script src="jquery-1.9.1.js"></script>
+  <script src="jquery-ui.js"></script>
+
+
+  <script>
+ /* $(document).ready (function(){
+							  
+    $( "#button" ).click(function() {
+        $( "#effect" ).animate({
+          backgroundColor: "#aa0000",
+          color: "#fff"
+        }, 1000 );
+       
+      $( "#effect" ).animate({
+          backgroundColor: "#000",
+          color: "#fff"
+        }, 1000 );
+      });
+  });*/
+  </script>
+
+
+    <script type="text/javascript">
+	function printbusy()
+	{
+		var text="BUSY WAITING .....";
+		
+	
+	document.getElementById("rite").innerHTML=text;
+	
+	}
+	
+	function printsleep()
+	{
+		var text="PRODUCER GOES TO SLEEP ..... SIGNALS CONSUMER";
+		
+	document.getElementById("left").innerHTML=text;
+	
+	}
+	var i=1;
+       $(document).ready(function start1() {
+										 
+    $("#bee1").animate({left: "-=300"}, 1000,"swing");
+	$("#bee1").animate({top: "-=400"}, 1000,"swing");
+	$("#bee1").animate({top: "+=400"}, 1000,"swing");
+   $("#bee1").animate({left: "+=300"}, 1000,"swing");
+ 
+ 
+    $("#bee2").animate({right: "-=350"}, 1000,"swing");
+	$("#bee2").animate({top: "-=400"}, 1000,"swing");
+	$("#bee2").animate({top: "+=400"}, 1000,"swing");
+	$("#bee2").animate({right: "+=350"}, 1000,"swing",function() {
+															 $("#effect"+i).animate({backgroundColor: "green"}, 1000);
+															$("#effect"+i).animate({backgroundColor: "#aa0000"}, 1000,"swing");
+															
+															if(i!=10)
+														printbusy();
+													else
+														printsleep();
+															 i=i+1;   
+															   });
+
+	
+	
+  start1();
+});
+  
+</script>
+</head>
+
+<body>
+
+<div id="left">
+
+
+</div>
+<div id="mid">
+<table class="schedule">
+<th colspan="5">BUFFER</th>
+<tr>
+<td id="effect1">1</td><td id="effect2">2</td><td id="effect3">3</td><td id="effect4">4</td><td id="effect5">5</td></tr>
+<tr>
+<td id="effect6">6</td><td id="effect7">7</td><td id="effect8">8</td><td id="effect9">9</td><td id="effect10">10</td></tr>
+</table>
+</div>
+<div id="rite">
+
+</div>
+<div id="midleft">
+
+<img src="gaming.png" id="bee2"width="60" height="60" style="position:relative;"/>
+
+</div>
+<div id="midmid">
+
+</div>
+<div id="midrite">
+<img src="gaming.png" id="bee1"width="60" height="60" style="position:relative;left:80%;"/>
+</div>
+<div id="pcontrols">
+<center><p>
+Producer Controls
+</p>
+<input type="button" name="pwait" value="wait"/>
+<input type="button" name="psignal" value="signal"/>
+
+</center>
+
+</div>
+<div id="bot">
+<p id="p1" style="color:#EEE; font-family:Ebrima; visibility:hidden;">BUSY WAITING .....
+</p>
+<p id="p2" style="color:#EEE; font-family:Ebrima;visibility:hidden;">PRODUCER GOES TO SLEEP ..... SIGNALS CONSUMER
+</p>
+</div>
+<div id="ccontrols">
+<center><p>
+Consumer Controls
+</p>
+<input type="button" name="cwait" value="wait" id="button"/>
+
+
+<input type="button" name="csignal" value="signal"/>
+
+</center>
+</div>
+
+
+ 
+
+
+
+
+</body>
+</html>
+
